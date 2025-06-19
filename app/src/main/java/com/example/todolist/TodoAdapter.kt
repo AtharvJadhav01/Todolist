@@ -26,6 +26,17 @@ class TodoAdapter (
             tvTodoTitle.paintFlags =tvTodoTitle.paintFlags and STRIKE_THRU_TEXT_FLAG.inv()
         }
     }
+
+    fun addTodo(todo: Todo){
+        todos.add(todo)
+        notifyItemInserted(todos.size-1)
+    }
+    fun deleteDoneTodos(){
+        todos.removeAll { todo ->
+            todo.isChecked
+        }
+        notifyDataSetChanged()
+    }
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val curTodo = todos[position]
 
@@ -38,7 +49,7 @@ class TodoAdapter (
 
         cbDone.setOnCheckedChangeListener { _, isChecked ->
             toggleStrikeThrough(tvTodoTitle, isChecked)
-            curTodo.isChecked = isChecked
+            curTodo.isChecked = !curTodo.isChecked
         }
     }
 
